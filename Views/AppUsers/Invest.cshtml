@@ -1,0 +1,161 @@
+﻿@model LETSGO.Models.AppUser
+
+@{
+    ViewData["Title"] = "Invest";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Page</title>
+    <style>
+        body {
+            background-color: white;
+        }
+
+        .container {
+            margin: auto;
+            background-color: rgb(228, 232, 235);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .investment-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: rgb(129, 44, 255);
+            font-family: 'Roboto', sans-serif;
+        }
+
+            .investment-section label {
+                flex: 0 0 48%;
+            }
+
+            .investment-section input {
+                flex: 0 0 48%;
+                background-color: white;
+                color: white;
+                padding: 10px;
+                border: 1px solid rgb(144, 91, 223);
+                border-radius: 5px;
+            }
+
+        .share-section {
+            display: flex;
+            align-items: center;
+        }
+
+            .share-section label {
+                flex: 0 0 48%;
+            }
+
+            .share-section span {
+                flex: 0 0 48%;
+            }
+
+        .investment-type {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: rgba(129, 44, 255, 0.4);
+            text-align: center;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .selected {
+            background-color: rgb(129, 44, 255);
+        }
+
+        .btn-primary {
+            background-color: rgb(144, 91, 223);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .btn-primary:hover {
+                background-color: darkblue;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Account Created, Welcome </h1>
+        <form id="investmentForm" action="AppUsers/Edit" method="post">
+            <div class="investment-section">
+                <div class="form-group">
+                    <label asp-for="InvestAmount" class= control-label required-field">How Much Do You Want To Invest: </label>
+                    <input asp-for="InvestAmount" type="number" id="amount" name="amount" class="form-control" required oninput="updateShares()" placeholder="$XXXX">
+                    <span asp-validation-for="InvestAmount" class="text-danger"></span>
+                </div>
+                <div class="share-section">
+                    <label> =Shares:</label>
+                    <span id="numberOfShares">0</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+            <div class="form-group">
+            <label asp-for="InvestmentType" class=control-label required-field">Choose Investment Type:</label>
+                <div class="investment-type" onclick="selectInvestmentType(this, 'Type 1')">Individual</div>
+                <div class="investment-type" onclick="selectInvestmentType(this, 'Type 2')">Joint</div>
+                <div class="investment-type" onclick="selectInvestmentType(this, 'Type 3')">Entity</div>
+                <div class="investment-type" onclick="selectInvestmentType(this, 'Type 4')">Trust</div>
+                <div class="investment-type" onclick="selectInvestmentType(this, 'Type 4')">IRA/401k</div>
+                <input type="hidden" asp-for="InvestmentType" required>
+            <span asp-validation-for="InvestmentType" class="text-danger"></span>
+            </div>
+
+        <button type="submit" id="investButton" class="btn btn-primary mb-2" onclick="submitInvestment()">Invest</button>
+    </div>
+
+
+    <script>
+        function selectInvestmentType(element, type) {
+            var elements = document.getElementsByClassName('investment-type');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].classList.remove('selected');
+            }
+
+            element.classList.add('selected');
+            document.getElementById('selectedType').value = type;
+        }
+
+        function updateShares() {
+            var amount = document.getElementById('amount').value;
+            var numberOfShares = document.getElementById('numberOfShares');
+            var sharesValue = amount ? Math.floor(amount / 10) : 0;
+            numberOfShares.textContent = sharesValue;
+        }
+
+        function submitInvestment() {
+
+            window.location.href = '/AppUsers/Display';
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
